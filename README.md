@@ -3,13 +3,30 @@
 Esteganografia en demos GoldSrc (Half-Life / Counter-Strike 1.6).
 Oculta archivos dentro de archivos .dem usando solo la biblioteca estandar de Python.
 
+> **Disclaimer:** Este proyecto es por diversión / aburrimiento (Claude + Yo intentando romper lo que armó Claude). No pretende ser una herramienta de seguridad de grado industrial ni un estándar formal. Úsenlo bajo su propio riesgo.
+
 ---
 
 ## Que hace
 
-Agarra cualquier archivo (texto, imagen, binario) y lo oculta dentro de un .dem del motor GoldSrc.
-La demo modificada se puede reproducir normalmente en el juego.
-El archivo oculto solo se puede recuperar con HLdemStego + la demo original.
+* Agarra cualquier archivo (texto, imagen, binario) y lo oculta dentro de un .dem del motor GoldSrc.
+* La demo modificada se puede reproducir normalmente en el juego.
+* El archivo oculto solo se puede recuperar con HLdemStego + la demo original.
+
+---
+
+## Que NO hace
+
+* **No pasa desapercibido ante análisis forense profundo.** Si alguien agarra un editor hexadecimal o analiza los strings a fondo, va a ver los tokens `HL:*`.
+* **No usa AES nativo** Usa HMAC-SHA256-CTR que es equivalente en
+seguridad pero menos conocido.
+
+---
+
+## El problema del democmdinfo_size
+El formato .dem de GoldSrc tiene un bloque llamado democmdinfo_t dentro de cada frame NET_MSG.
+Su tamaño (164 bytes para CS 1.6 estandar) varia segun el mod, el protocolo y la version del cliente. 
+Si el parser falla, probar con --democmdinfo-size 0, 56 o 208.
 
 ---
 
